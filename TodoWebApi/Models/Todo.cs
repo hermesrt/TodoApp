@@ -2,12 +2,12 @@
 
 namespace TodoWebApi.Models
 {
-    public class Task
+    public class Todo
     {
         [Key]
         public long Id { get; set; }
         public string Name { get; set; }
         public long TaskGroupId { get; set; }
-        public TaskGroup TaskGroup { get; set; }
+        public TodoGroup TaskGroup { get; set; }
     }
 }
