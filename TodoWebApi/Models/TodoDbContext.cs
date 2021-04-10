@@ -24,5 +24,6 @@ namespace TodoWebApi.Models
         //Tablas de datos
         public virtual DbSet<Todo> Todo { get; set; }
         public virtual DbSet<TodoGroup> TodoGroup { get; set; }
+        public virtual DbSet<User> User{ get; set; }
     }
 }
