@@ -30,6 +30,16 @@ namespace TodoWebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "localhost",
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("https://localhost:44314")
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod();
+                                  });
+            });
             services.AddControllers();
             services.AddDbContext<TodoDbContext>(options =>
                  options.UseMySql(Configuration.GetConnectionString("Default"), ServerVersion.FromString("10.5.8-MariaDB")));
@@ -63,8 +73,9 @@ namespace TodoWebApi
                 app.UseDeveloperExceptionPage();
             }
             // order is important.
-            app.UseAuthentication();
             app.UseRouting();
+            app.UseCors("localhost");
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseHttpsRedirection();
             app.UseEndpoints(endpoints =>

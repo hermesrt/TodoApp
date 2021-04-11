@@ -13,27 +13,27 @@ namespace TodoWebApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class TodosController : ControllerBase
+    public class TodoController : ControllerBase
     {
         private readonly TodoDbContext _context;
 
-        public TodosController(TodoDbContext context)
+        public TodoController(TodoDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Todoes
+        // GET: api/Todo
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Todo>>> GetTodo()
         {
             return await _context.Todo.ToListAsync();
         }
 
-        // GET: api/Todoes/5
+        // GET: api/Todo/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Todo>> GetTodo(long id)
+        public ActionResult<Todo[]> GetTodo(long id)
         {
-            var todo = await _context.Todo.FindAsync(id);
+            var todo = _context.Todo.Where(e => e.GroupId == id).ToArray();
 
             if (todo == null)
             {
@@ -43,7 +43,7 @@ namespace TodoWebApi.Controllers
             return todo;
         }
 
-        // PUT: api/Todoes/5
+        // PUT: api/Todo/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTodo(long id, Todo todo)
@@ -74,7 +74,7 @@ namespace TodoWebApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Todoes
+        // POST: api/Todo
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Todo>> PostTodo(Todo todo)
@@ -85,7 +85,7 @@ namespace TodoWebApi.Controllers
             return CreatedAtAction("GetTodo", new { id = todo.Id }, todo);
         }
 
-        // DELETE: api/Todoes/5
+        // DELETE: api/Todo/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodo(long id)
         {

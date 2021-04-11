@@ -7,7 +7,8 @@ namespace TodoWebApi.Models
         [Key]
         public long Id { get; set; }
         public string Name { get; set; }
-        public long TaskGroupId { get; set; }
-        public TodoGroup TaskGroup { get; set; }
+        public bool IsDone { get; set; }
+        public long GroupId { get; set; }
+        public TodoGroup Group { get; set; }
     }
 }

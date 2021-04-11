@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TodoWebApi.Models;
 
 namespace TodoWebApi.Migrations
 {
     [DbContext(typeof(TodoDbContext))]
-    partial class TodoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210411001612_init0")]
+    partial class init0
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,12 +34,15 @@ namespace TodoWebApi.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<long?>("TodoGroupId")
+                        .HasColumnType("bigint");
+
                     b.Property<long?>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("TodoGroupId");
 
                     b.HasIndex("UserId");
 
@@ -82,17 +87,15 @@ namespace TodoWebApi.Migrations
 
             modelBuilder.Entity("TodoWebApi.Models.Todo", b =>
                 {
-                    b.HasOne("TodoWebApi.Models.TodoGroup", "Group")
+                    b.HasOne("TodoWebApi.Models.TodoGroup", "TodoGroup")
                         .WithMany("Todos")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TodoGroupId");
 
                     b.HasOne("TodoWebApi.Models.User", null)
                         .WithMany("Todos")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Group");
+                    b.Navigation("TodoGroup");
                 });
 
             modelBuilder.Entity("TodoWebApi.Models.TodoGroup", b =>

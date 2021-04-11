@@ -26,27 +26,26 @@ namespace TodoWebApi.Controllers
             _configuration = configuration;
         }
 
-        public struct UserViewModel
+        public class UserViewModel
         {
             public string Name { get; set; }
             public string Password { get; set; }
         }
         private string EncryptPasswrod(string password)
         {
-            //TODO: Agregar encriptacion a la tremendamente complja logica de este metodo.
+            //TODO: Agregar encriptacion a la tremendamente compleja logica de este metodo.
             return password;
         }
 
         [HttpPost]
         [Route("[action]")]
-        public IActionResult Login(UserViewModel model)
+        public IActionResult Login([FromForm]UserViewModel model)
         {
             if (string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrWhiteSpace(model.Name))
             {
                 return BadRequest();
             }
 
-            // TODO: CheckThis
             var encryptedPassword = EncryptPasswrod(model.Password);
             var user = _context.User.SingleOrDefault(e => e.Name == model.Name && e.Password == encryptedPassword.ToString());
             if (user == null)

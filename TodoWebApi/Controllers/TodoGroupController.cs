@@ -13,27 +13,27 @@ namespace TodoWebApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class TodoGroupsController : ControllerBase
+    public class TodoGroupController : ControllerBase
     {
         private readonly TodoDbContext _context;
 
-        public TodoGroupsController(TodoDbContext context)
+        public TodoGroupController(TodoDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/TodoGroups
+        // GET: api/TodoGroup
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoGroup>>> GetTodoGroup()
         {
             return await _context.TodoGroup.ToListAsync();
         }
 
-        // GET: api/TodoGroups/5
+        // GET: api/TodoGroup/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TodoGroup>> GetTodoGroup(long id)
+        public ActionResult<TodoGroup[]> GetTodoGroup(long id)
         {
-            var todoGroup = await _context.TodoGroup.FindAsync(id);
+            var todoGroup = _context.TodoGroup.Where(e => e.UserId == id).ToArray();
 
             if (todoGroup == null)
             {
@@ -43,7 +43,7 @@ namespace TodoWebApi.Controllers
             return todoGroup;
         }
 
-        // PUT: api/TodoGroups/5
+        // PUT: api/TodoGroup/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTodoGroup(long id, TodoGroup todoGroup)
@@ -74,7 +74,7 @@ namespace TodoWebApi.Controllers
             return NoContent();
         }
 
-        // POST: api/TodoGroups
+        // POST: api/TodoGroup
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<TodoGroup>> PostTodoGroup(TodoGroup todoGroup)
@@ -85,7 +85,7 @@ namespace TodoWebApi.Controllers
             return CreatedAtAction("GetTodoGroup", new { id = todoGroup.Id }, todoGroup);
         }
 
-        // DELETE: api/TodoGroups/5
+        // DELETE: api/TodoGroup/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodoGroup(long id)
         {
