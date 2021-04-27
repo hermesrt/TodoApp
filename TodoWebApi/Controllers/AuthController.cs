@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using TodoWebApi.Helpers;
 using TodoWebApi.Models;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
@@ -28,39 +29,39 @@ namespace TodoWebApi.Controllers
 
         public class UserViewModel
         {
-            public string Name { get; set; }
+            public string email { get; set; }
             public string Password { get; set; }
         }
-        private string EncryptPasswrod(string password)
-        {
-            //TODO: Agregar encriptacion a la tremendamente compleja logica de este metodo.
-            return password;
-        }
+
 
         [HttpPost]
         [Route("[action]")]
-        public IActionResult Login([FromForm]UserViewModel model)
+        public IActionResult Login([FromBody] UserViewModel model)
         {
-            if (string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrWhiteSpace(model.Name))
+            if (string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrWhiteSpace(model.email))
             {
                 return BadRequest();
             }
 
-            var encryptedPassword = EncryptPasswrod(model.Password);
-            var user = _context.User.SingleOrDefault(e => e.Name == model.Name && e.Password == encryptedPassword.ToString());
-            if (user == null)
+            var targetUser = _context.User.SingleOrDefault(e => e.Email == model.email);
+            if (targetUser == null)
             {
                 return NotFound();
             }
 
+            var hashedPass = SecurityHelper.HashPassword(model.Password, targetUser.Salt);
+            if (hashedPass != targetUser.Password)
+            {
+                return Unauthorized();
+            }
 
             var secretKey = _configuration.GetValue<string>("SecretKey");
             var key = Encoding.ASCII.GetBytes(secretKey);
 
             var claims = new ClaimsIdentity(new[]
             {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.Name)
+            new Claim(ClaimTypes.NameIdentifier, targetUser.Id.ToString()),
+            new Claim(ClaimTypes.Name, targetUser.Email)
         });
 
 
@@ -75,6 +76,22 @@ namespace TodoWebApi.Controllers
             var createdToken = tokenHandler.CreateToken(tokenDescriptor);
 
             return Ok(tokenHandler.WriteToken(createdToken));
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult SignUp([FromBody] UserViewModel model)
+        {
+            var salt = SecurityHelper.GenerateSalt();
+            var hashedPasswod = SecurityHelper.HashPassword(model.Password, salt);
+            _context.User.Add(new Models.User
+            {
+                Email = model.email,
+                Password = hashedPasswod,
+                Salt = salt
+            });
+            _context.SaveChanges();
+            return Ok();
         }
     }
 }

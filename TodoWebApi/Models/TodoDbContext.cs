@@ -13,13 +13,15 @@ namespace TodoWebApi.Models
         {
         }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    if (!optionsBuilder.IsConfigured)
-        //    {
-        //        optionsBuilder.UseMySql("Server=localhost;Database=todo_app;Uid=todo_app;Pwd=1234;", ServerVersion.FromString("10.5.8-mariadb"));
-        //    }
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+            base.OnModelCreating(modelBuilder);
+        }
+
+
 
         //Tablas de datos
         public virtual DbSet<Todo> Todo { get; set; }
