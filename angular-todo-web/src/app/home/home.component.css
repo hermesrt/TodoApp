@@ -1,0 +1,9 @@
+.home-container {
+padding: 5em;
+}
+.home-card-continer{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
