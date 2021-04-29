@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { SpinnerService } from "../services/spinner.service";
 
 @Component({
   selector: 'app-root',
@@ -8,7 +7,6 @@ import { SpinnerService } from "../services/spinner.service";
 })
 export class AppComponent {
   title = 'angular-todo-web';
-  showSpinner: boolean;
 
-  constructor(public spinnerSrv: SpinnerService) { };
+  constructor() { };
 }

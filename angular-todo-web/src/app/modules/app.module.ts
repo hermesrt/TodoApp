@@ -18,10 +18,12 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { OverlayModule } from '@angular/cdk/overlay';
 // Custom component/services imports
 import { HomeComponent } from '../components/home/home.component';
 import { LoginComponent } from '../components/login/login.component';
 import { AuthService } from '../services/auth.service';
+import { SpinnerOverlayComponent } from "../components/spinner-overlay/spinner-overlay.component";
 
 // Interceptors
 import { AuthInterceptor } from '../interceptors/auth.interceptor';
@@ -35,7 +37,8 @@ import { SpinnerInterceptor } from '../interceptors/spinner.interceptor';
     ToolbarComponent,
     HomeComponent,
     LoginComponent,
-    TodoComponent
+    TodoComponent,
+    SpinnerOverlayComponent
   ],
   imports: [
     BrowserModule,
@@ -57,11 +60,12 @@ import { SpinnerInterceptor } from '../interceptors/spinner.interceptor';
           return AuthService.getToken();
         }
       }
-    })
+    }),
+    OverlayModule
   ],
   providers: [
     //TODO: check if this is necesary
-    // AuthService,
+    // AuthService,    
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
@@ -69,7 +73,7 @@ import { SpinnerInterceptor } from '../interceptors/spinner.interceptor';
     }, {
       provide: HTTP_INTERCEPTORS,
       useClass: SpinnerInterceptor,
-      multi: true
+      multi: true,
     }],
   bootstrap: [AppComponent]
 })
