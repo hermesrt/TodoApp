@@ -75,7 +75,7 @@ namespace TodoWebApi.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
             var createdToken = tokenHandler.CreateToken(tokenDescriptor);
 
-            return Ok(tokenHandler.WriteToken(createdToken));
+            return Ok(new { token = tokenHandler.WriteToken(createdToken)});
         }
 
         [HttpPost]
