@@ -19,7 +19,7 @@ export class AuthInterceptor implements HttpInterceptor {
   // Intercepta las peticiones HTTP y setea el token en el authorization header,
   // si no hay token deja la peticion como esta y en caso de retornar un Unathorized(401) redirige al login
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    debugger;
+
     const token: string = AuthService.getToken();
 
     let request = req;

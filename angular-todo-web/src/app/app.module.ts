@@ -17,6 +17,7 @@ import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 // Custom component/services imports
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
@@ -25,6 +26,7 @@ import { AuthService } from './services/auth.service';
 // Interceptors
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { TodoComponent } from './todo/todo.component';
+import { SpinnerInterceptor } from './interceptors/spinner.interceptor';
 
 
 @NgModule({
@@ -44,6 +46,7 @@ import { TodoComponent } from './todo/todo.component';
     MatCardModule,
     MatButtonModule,
     MatFormFieldModule,
+    MatProgressSpinnerModule,
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
@@ -57,10 +60,15 @@ import { TodoComponent } from './todo/todo.component';
     })
   ],
   providers: [
-    AuthService,
+    //TODO: check if this is necesary
+    // AuthService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    }, {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SpinnerInterceptor,
       multi: true
     }],
   bootstrap: [AppComponent]

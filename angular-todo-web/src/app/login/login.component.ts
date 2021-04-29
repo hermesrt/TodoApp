@@ -29,18 +29,15 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    debugger;
     this.authSrv.login(this.email.value, this.password.value)
       .subscribe(
         //Success callback.
         (response) => {
-          debugger;
           AuthService.setToken(response["token"]);
           this.router.navigate(["todo"]);
         },
         //Error callback.
         (error) => {
-          debugger;
           console.log("Error happened" + error);
         },
         //Always callback.

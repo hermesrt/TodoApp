@@ -12,7 +12,7 @@ export class LoggedGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    debugger;
+
     if (this.authSrv.isAtuhenticated()) {
       this.router.navigate(["todo"]);
       return false;
