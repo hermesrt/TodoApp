@@ -8,7 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 
 //Third party libs.
-import { JwtModule, JwtModuleOptions } from "@auth0/angular-jwt";
+import { JwtModule } from "@auth0/angular-jwt";
 
 // Angular material imports.
 import { MatToolbarModule } from "@angular/material/toolbar";
