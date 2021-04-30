@@ -14,7 +14,7 @@
 
             <mat-form-field appearance="fill">
                 <mat-label>Ingrese su contraseña</mat-label>
-                <input matInput [formControl]="password" required>
+                <input matInput type="password" [formControl]="password" required>
                 <mat-error *ngIf="password.invalid">{{getPasswordErrorMessage()}}</mat-error>
             </mat-form-field>
 

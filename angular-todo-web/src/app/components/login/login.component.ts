@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from "@angular/forms";
 import { AuthService } from '../../services/auth.service';
 import { Router } from "@angular/router";
+import { SnackBarService } from 'src/app/services/snack-bar.service';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,7 @@ import { Router } from "@angular/router";
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private authSrv: AuthService, private router: Router) { }
+  constructor(private authSrv: AuthService, private router: Router, private snackBar: SnackBarService) { }
 
   email = new FormControl('', [Validators.required, Validators.email]);
   password = new FormControl('', [Validators.required, Validators.min(4)])
@@ -38,7 +39,7 @@ export class LoginComponent implements OnInit {
         },
         //Error callback.
         (error) => {
-          console.log("Error happened" + error);
+          this.snackBar.open("Usuaro o contraseña incorrecta!");
         },
         //Always callback.
         () => { console.log("the subscription is completed") })

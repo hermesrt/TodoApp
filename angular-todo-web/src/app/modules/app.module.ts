@@ -18,6 +18,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { OverlayModule } from '@angular/cdk/overlay';
 // Custom component/services imports
 import { HomeComponent } from '../components/home/home.component';
@@ -61,7 +62,8 @@ import { SpinnerInterceptor } from '../interceptors/spinner.interceptor';
         }
       }
     }),
-    OverlayModule
+    OverlayModule,
+    MatSnackBarModule
   ],
   providers: [
     //TODO: check if this is necesary
