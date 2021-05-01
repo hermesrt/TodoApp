@@ -3,6 +3,7 @@ import { HttpClient, } from "@angular/common/http";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { Observable } from 'rxjs';
 import { User } from "../models/User";
+import { Router } from "@angular/router";
 
 export const TOKEN_NAME: string = 'jwt_token';
 
@@ -12,9 +13,9 @@ export const TOKEN_NAME: string = 'jwt_token';
 export class AuthService {
 
   private url: string = 'https://localhost:44368/auth/login';
-  private headers = { 'content-type': 'application/json' }
+  private headers = { 'content-type': 'application/json' };
 
-  constructor(private httpClient: HttpClient, private jwtHelper: JwtHelperService) { }
+  constructor(private httpClient: HttpClient, private jwtHelper: JwtHelperService, private router: Router) { }
 
   //Get the token from localStorage.
   public static getToken(): string {
@@ -37,7 +38,7 @@ export class AuthService {
     }
   }
 
-  isAtuhenticated(): boolean {
+  public isAtuhenticated(): boolean {
     const token = AuthService.getToken();
     if (!token) {
       return false;
@@ -56,6 +57,11 @@ export class AuthService {
 
   login(email: string, password: string): Observable<string> {
     return this.httpClient.post<string>(this.url, { email: email, Password: password }, { headers: this.headers });
+  }
+
+  logout(): void {
+    localStorage.removeItem(TOKEN_NAME);
+    this.router.navigate(["home"]);
   }
 
 }

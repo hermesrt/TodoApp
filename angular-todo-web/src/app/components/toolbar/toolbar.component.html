@@ -1,4 +1,9 @@
-<mat-toolbar color="primary">
-    <mat-icon>checklist</mat-icon>
-    <span style="padding-left: 0.5em;">TodoApp</span>
+<mat-toolbar color="primary" class="toolbar-container">
+    <div style="flex: 1 0 0">
+        <mat-icon>checklist</mat-icon>
+        <span style="padding-left: 0.5em;">TodoApp</span>
+    </div>
+    <div *ngIf="authSrv.isAtuhenticated()">
+        <button mat-stroked-button (click)="logout()">LogOut</button>
+    </div>
 </mat-toolbar>
