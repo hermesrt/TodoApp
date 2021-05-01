@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from "@angular/forms";
 import { AuthService } from '../../services/auth.service';
 import { Router } from "@angular/router";
-import { SnackBarService } from 'src/app/services/snack-bar.service';
+import { SnackBarService } from '../../services/snack-bar.service';
 
 @Component({
   selector: 'app-login',

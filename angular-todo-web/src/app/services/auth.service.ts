@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, } from "@angular/common/http";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { Observable } from 'rxjs';
+import { User } from "../models/User";
 
 export const TOKEN_NAME: string = 'jwt_token';
 
@@ -25,7 +26,18 @@ export class AuthService {
     localStorage.setItem(TOKEN_NAME, token);
   }
 
-  public isAtuhenticated(): boolean {
+  //Get JWT user data.
+  getJwtData(token?: string): User {
+    token = token ? token : AuthService.getToken();
+    try {
+      const user = <User>this.jwtHelper.decodeToken(token);
+      return user;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  isAtuhenticated(): boolean {
     const token = AuthService.getToken();
     if (!token) {
       return false;

@@ -19,6 +19,10 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+
+import { MatSortModule } from "@angular/material/sort";
+import { MatTableModule } from "@angular/material/table";
+import { MatPaginatorModule } from "@angular/material/paginator";
 import { OverlayModule } from '@angular/cdk/overlay';
 // Custom component/services imports
 import { HomeComponent } from '../components/home/home.component';
@@ -63,7 +67,11 @@ import { SpinnerInterceptor } from '../interceptors/spinner.interceptor';
       }
     }),
     OverlayModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     //TODO: check if this is necesary

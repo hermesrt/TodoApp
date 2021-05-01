@@ -60,8 +60,8 @@ namespace TodoWebApi.Controllers
 
             var claims = new ClaimsIdentity(new[]
             {
-            new Claim(ClaimTypes.NameIdentifier, targetUser.Id.ToString()),
-            new Claim(ClaimTypes.Name, targetUser.Email)
+            new Claim("Id", targetUser.Id.ToString()),
+            new Claim("Email", targetUser.Email)
         });
 
 
