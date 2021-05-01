@@ -7,7 +7,9 @@ namespace TodoWebApi.Models
     {
         [Key]
         public long Id { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public long UserId { get; set; }
         public ICollection<Todo> Todos { get; set; }
 

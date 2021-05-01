@@ -10,14 +10,15 @@ namespace TodoWebApi.Models
     {
         [Key]
         public long Id { get; set; }
+        [Required]
         public string Email { get; set; }
+        [Required]
         public string Salt { get; set; }
+        [Required]
         public string Password { get; set; }
-        public ICollection<Todo> Todos { get; set; }
         public ICollection<TodoGroup> TodoGroups { get; set; }
         public User()
         {
-            Todos = new HashSet<Todo>();
             TodoGroups = new HashSet<TodoGroup>();
         }
     }

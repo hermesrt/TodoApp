@@ -18,6 +18,15 @@ namespace TodoWebApi.Models
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
+            
+            modelBuilder.Entity<TodoGroup>()
+                .HasIndex(e => new { e.UserId, e.Name })
+                .IsUnique();
+
+            modelBuilder.Entity<Todo>()
+                .HasIndex(e => new { e.GroupId, e.Name })
+                .IsUnique();
+
             base.OnModelCreating(modelBuilder);
         }
 

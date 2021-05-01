@@ -13,7 +13,6 @@ export class ToolbarComponent implements OnInit {
   ngOnInit(): void {
   }
   logout() {
-    debugger;
     this.authSrv.logout();
   }
 }
