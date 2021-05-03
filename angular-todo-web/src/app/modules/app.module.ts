@@ -7,6 +7,7 @@ import { ToolbarComponent } from '../components/toolbar/toolbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 
+
 //Third party libs.
 import { JwtModule } from "@auth0/angular-jwt";
 
@@ -19,12 +20,13 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatMenuModule } from "@angular/material/menu";
 
 import { MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { OverlayModule } from '@angular/cdk/overlay';
-// Custom component/services imports
+// Custom component/services imports11
 import { HomeComponent } from '../components/home/home.component';
 import { LoginComponent } from '../components/login/login.component';
 import { AuthService } from '../services/auth.service';
@@ -34,6 +36,7 @@ import { SpinnerOverlayComponent } from "../components/spinner-overlay/spinner-o
 import { AuthInterceptor } from '../interceptors/auth.interceptor';
 import { TodoComponent } from '../components/todo/todo.component';
 import { SpinnerInterceptor } from '../interceptors/spinner.interceptor';
+import { SingupComponent } from '../components/singup/singup.component';
 
 
 @NgModule({
@@ -43,7 +46,8 @@ import { SpinnerInterceptor } from '../interceptors/spinner.interceptor';
     HomeComponent,
     LoginComponent,
     TodoComponent,
-    SpinnerOverlayComponent
+    SpinnerOverlayComponent,
+    SingupComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +75,8 @@ import { SpinnerInterceptor } from '../interceptors/spinner.interceptor';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatMenuModule
   ],
   providers: [
     //TODO: check if this is necesary

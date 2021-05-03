@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from "@angular/forms";
+import { Validators, FormBuilder } from "@angular/forms";
 import { AuthService } from '../../services/auth.service';
 import { Router } from "@angular/router";
 import { SnackBarService } from '../../services/snack-bar.service';
@@ -11,26 +11,41 @@ import { SnackBarService } from '../../services/snack-bar.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private authSrv: AuthService, private router: Router, private snackBar: SnackBarService) { }
+  constructor(private authSrv: AuthService, private router: Router, private snackBar: SnackBarService, private fb: FormBuilder) { }
 
-  email = new FormControl('', [Validators.required, Validators.email]);
-  password = new FormControl('', [Validators.required, Validators.min(4)])
+  //Simple example of FormGroup created with FromBuilder.
+  loginForm = this.fb.group({
+    email: ["", [Validators.required, Validators.email]],
+    password: ["", [Validators.required, Validators.minLength(4)]]
+  })
 
-  getEmailErrorMessage() {
-    if (this.email.hasError('required')) {
-      return 'Debes ingresar un email';
-    }
+  errorByFromControlName(formControlName: string) {
+    switch (formControlName) {
+      case "email":
+        if (this.loginForm.get("email").hasError('required')) {
+          return 'El email es requerido';
+        }
+        if (this.loginForm.get("email").hasError('email')) {
+          return "El email es inválido";
+        }
+        break;
+      case "password":
+        if (this.loginForm.get("password").hasError('required')) {
+          return "La contraseña es obligatoria"
+        }
+        if (this.loginForm.get("password").hasError('minlength')) {
+          return "La contraseña debe contener al menos 4 caracteres"
+        }
+        break;
 
-    return this.email.hasError('email') ? 'Email no válido' : '';
-  }
-  getPasswordErrorMessage() {
-    if (this.password.hasError('required')) {
-      return "Debes ingresar una contraseña"
+      default:
+        console.error("Unrecognized formControlName!");
+        break;
     }
   }
 
   login() {
-    this.authSrv.login(this.email.value, this.password.value)
+    this.authSrv.login(this.loginForm.get("email").value, this.loginForm.get("password").value)
       .subscribe(
         //Success callback.
         (response) => {

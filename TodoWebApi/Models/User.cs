@@ -8,6 +8,7 @@ namespace TodoWebApi.Models
 {
     public class User
     {
+        //
         [Key]
         public long Id { get; set; }
         [Required]

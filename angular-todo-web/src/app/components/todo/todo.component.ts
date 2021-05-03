@@ -22,7 +22,7 @@ export class TodoComponent implements AfterViewInit {
   constructor(private httpClient: HttpClient, private todoSrv: TodoGroupService, private authSrv: AuthService, private snackBarSrv: SnackBarService) { }
 
   search = new FormControl("", [Validators.min(3)]);
-  displayedColumns: string[] = ["name", "actions"];
+  displayedColumns: string[] = ["name", "priority", "actions"];
   todoDataSource: MatTableDataSource<TodoGroup>;
   resultsLength = 0;
 
@@ -30,8 +30,22 @@ export class TodoComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   ngAfterViewInit(): void {
+    this.getGroups();
+  }
 
-    this.todoSrv.getGroups()
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.todoDataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  resetPaging(): void {
+    this.paginator.pageIndex = 0;
+  }
+
+
+  getGroups() {
+    const userData = this.authSrv.getJwtData();
+    this.todoSrv.getGroups(userData.Id)
       .subscribe(
         (response) => {
           this.todoDataSource = new MatTableDataSource(response);
@@ -44,17 +58,8 @@ export class TodoComponent implements AfterViewInit {
         }
       )
   }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.todoDataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  resetPaging(): void {
-    this.paginator.pageIndex = 0;
-  }
-
   deleteGroup(group: TodoGroup) {
+    //TODO: confirm dialog
     const dataSource = this.todoDataSource;
     this.todoSrv.deleteGroup(group.id)
       .subscribe(

@@ -1,9 +1,25 @@
 <mat-toolbar color="primary" class="toolbar-container">
+    <mat-icon>checklist</mat-icon>
     <div style="flex: 1 0 0">
-        <mat-icon>checklist</mat-icon>
         <span style="padding-left: 0.5em;">TodoApp</span>
     </div>
     <div *ngIf="authSrv.isAtuhenticated()">
-        <button mat-stroked-button (click)="logout()">LogOut</button>
+        <button mat-stroked-button (click)="logout()">Cerrar sesión</button>
+    </div>
+    <div *ngIf="!authSrv.isAtuhenticated()">
+        <button mat-button [matMenuTriggerFor]="menu">
+            <mat-icon>account_circle</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item routerLink="login">
+                <mat-icon>login</mat-icon>Iniciar sesión
+            </button>
+            <button mat-menu-item routerLink="signup">
+                <mat-icon>
+                    person_add
+                </mat-icon>Registrarse
+            </button>
+        </mat-menu>
+
     </div>
 </mat-toolbar>

@@ -22,18 +22,28 @@ namespace TodoWebApi.Controllers
             _context = context;
         }
 
+        public class TodogroupParams
+        {
+            public long UserId { get; set; }
+        }
+
         // GET: api/TodoGroup
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TodoGroup>>> GetTodoGroup()
+        public async Task<ActionResult<IEnumerable<TodoGroup>>> GetTodoGroup([FromQuery] TodogroupParams pars)
         {
-            return await _context.TodoGroup.ToListAsync();
+            var dbSet = _context.TodoGroup.Select(e => e);
+            if (pars.UserId > 0)
+            {
+                dbSet = dbSet.Where(e => e.UserId == pars.UserId);
+            }
+            return await dbSet.ToListAsync();
         }
 
         // GET: api/TodoGroup/5
         [HttpGet("{id}")]
         public ActionResult<TodoGroup[]> GetTodoGroup(long id)
         {
-            var todoGroup = _context.TodoGroup.Where(e => e.UserId == id).ToArray();
+            var todoGroup = _context.TodoGroup.Where(e => e.Id == id).ToArray();
 
             if (todoGroup == null)
             {

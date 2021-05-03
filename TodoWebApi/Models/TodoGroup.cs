@@ -11,6 +11,8 @@ namespace TodoWebApi.Models
         public string Name { get; set; }
         [Required]
         public long UserId { get; set; }
+        [Required]
+        public long Priority { get; set; }
         public ICollection<Todo> Todos { get; set; }
 
         public TodoGroup()

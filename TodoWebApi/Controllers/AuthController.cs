@@ -29,7 +29,7 @@ namespace TodoWebApi.Controllers
 
         public class UserViewModel
         {
-            public string email { get; set; }
+            public string Email { get; set; }
             public string Password { get; set; }
         }
 
@@ -38,12 +38,12 @@ namespace TodoWebApi.Controllers
         [Route("[action]")]
         public IActionResult Login([FromBody] UserViewModel model)
         {
-            if (string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrWhiteSpace(model.email))
+            if (string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrWhiteSpace(model.Email))
             {
                 return BadRequest();
             }
 
-            var targetUser = _context.User.SingleOrDefault(e => e.Email == model.email);
+            var targetUser = _context.User.SingleOrDefault(e => e.Email == model.Email);
             if (targetUser == null)
             {
                 return NotFound();
@@ -86,7 +86,7 @@ namespace TodoWebApi.Controllers
             var hashedPasswod = SecurityHelper.HashPassword(model.Password, salt);
             _context.User.Add(new Models.User
             {
-                Email = model.email,
+                Email = model.Email,
                 Password = hashedPasswod,
                 Salt = salt
             });

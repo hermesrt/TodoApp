@@ -12,7 +12,12 @@ export const TOKEN_NAME: string = 'jwt_token';
 })
 export class AuthService {
 
-  private url: string = 'https://localhost:44368/auth/login';
+  // private baseUrl: string = 'https://localhost:44368/auth';
+  private endpoints = {
+    baseUrl: "https://localhost:44368/auth/",
+    login: () => this.endpoints.baseUrl + "login",
+    signup: () => this.endpoints.baseUrl + "signup"
+  };
   private headers = { 'content-type': 'application/json' };
 
   constructor(private httpClient: HttpClient, private jwtHelper: JwtHelperService, private router: Router) { }
@@ -56,7 +61,11 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<string> {
-    return this.httpClient.post<string>(this.url, { email: email, Password: password }, { headers: this.headers });
+    return this.httpClient.post<string>(this.endpoints.login(), { email: email, Password: password }, { headers: this.headers });
+  }
+
+  signup(email: string, password: string): Observable<any> {
+    return this.httpClient.post(this.endpoints.signup(), { email: email, Password: password }, { headers: this.headers });
   }
 
   logout(): void {
