@@ -1,0 +1,35 @@
+<div>
+
+    <h1>Grupo</h1>
+    <form [formGroup]="groupForm" (ngSubmit)="submitGroup()">
+
+        <mat-grid-list cols="1" rowHeight="5em">
+            <mat-grid-tile>
+                <mat-form-field>
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="name" />
+                    <mat-error *ngIf="this.groupForm.get('name').hasError('required')">Campo obligatorio</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field>
+                    <mat-label>Prioridad</mat-label>
+                    <input matInput formControlName="priority" />
+                    <mat-error *ngIf="this.groupForm.get('priority').hasError('required')">Campo obligatorio
+                    </mat-error>
+                    <mat-error
+                        *ngIf="this.groupForm.get('priority').hasError('min') || this.groupForm.get('priority').hasError('min')">
+                        El valor debe ser de 1 a 5
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <div style="display: flex; justify-content: space-evenly;">
+            <button mat-raised-button color="primary" type="submit" [disabled]="this.groupForm.invalid">Aceptar</button>
+            <button mat-stroked-button color="warn" [mat-dialog-close]="false">Cancelar</button>
+        </div>
+
+    </form>
+
+</div>

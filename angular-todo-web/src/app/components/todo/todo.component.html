@@ -1,44 +1,43 @@
 <div class="todo-main-container mat-elevation-z8">
-    <div>
 
+    <mat-toolbar color="primary">
         <mat-form-field style="width: 100%;">
-            <mat-label>Buscar...</mat-label>
-            <input matInput (keyup)="applyFilter($event)" [formControl]="search" min="3">
-            <button mat-raised-button color="primary" matSuffix (click)="addGroup()" style="margin: 0.5em;">
+            <input matInput (keyup)="applyFilter($event)" [formControl]="search" min="3" placeholder="Buscar...">
+            <button mat-raised-button color="accent" matSuffix (click)="addGroup()" style="margin: 0.5em;">
                 <mat-icon>add_circle_outline</mat-icon>
             </button>
         </mat-form-field>
+    </mat-toolbar>
 
-        <table mat-table [dataSource]="todoDataSource" matSort matSortActive="created" matSortDisableClear
-            style="width: 100%; " matSortDirection="desc" (matSortChange)="resetPaging()">
-            <!-- Name Column -->
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Grupo</th>
-                <td mat-cell *matCellDef="let row">{{row.name}}</td>
-            </ng-container>
-            <!-- Priority Column -->
-            <ng-container matColumnDef="priority">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Prioridad</th>
-                <td mat-cell *matCellDef="let row">{{row.priority}}</td>
-            </ng-container>
+    <table mat-table [dataSource]="todoDataSource" matSort matSortActive="created" matSortDisableClear
+        style="width: 100%; " matSortDirection="desc" (matSortChange)="resetPaging()">
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Grupo</th>
+            <td mat-cell *matCellDef="let row">{{row.name}}</td>
+        </ng-container>
+        <!-- Priority Column -->
+        <ng-container matColumnDef="priority">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Prioridad</th>
+            <td mat-cell *matCellDef="let row">{{row.priority}}</td>
+        </ng-container>
 
-            <!-- Actions Column -->
-            <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef> </th>
-                <td mat-cell *matCellDef="let row">
-                    <button mat-button>
-                        <mat-icon style="color: rgb(252, 219, 33);">edit</mat-icon>
-                    </button>
-                    <button mat-button (click)="deleteGroup(row)">
-                        <mat-icon style="color: rgb(224, 32, 32);">delete</mat-icon>
-                    </button>
-                </td>
-            </ng-container>
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let row">
+                <button mat-button (click)="editGroupDialog(row)">
+                    <mat-icon style="color: rgb(252, 219, 33);">edit</mat-icon>
+                </button>
+                <button mat-button (click)="deleteGroup(row)">
+                    <mat-icon style="color: rgb(224, 32, 32);">delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-    </div>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
 
     <mat-paginator [length]="resultsLength"></mat-paginator>
 </div>

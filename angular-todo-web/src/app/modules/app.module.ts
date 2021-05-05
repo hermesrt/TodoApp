@@ -21,22 +21,26 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatMenuModule } from "@angular/material/menu";
-
+import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from "@angular/material/dialog";
 import { MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { OverlayModule } from '@angular/cdk/overlay';
+import { MatGridListModule } from "@angular/material/grid-list";
 // Custom component/services imports11
 import { HomeComponent } from '../components/home/home.component';
 import { LoginComponent } from '../components/login/login.component';
 import { AuthService } from '../services/auth.service';
 import { SpinnerOverlayComponent } from "../components/spinner-overlay/spinner-overlay.component";
+import { SingupComponent } from '../components/singup/singup.component';
+import { TodoComponent } from '../components/todo/todo.component';
+
 
 // Interceptors
 import { AuthInterceptor } from '../interceptors/auth.interceptor';
-import { TodoComponent } from '../components/todo/todo.component';
 import { SpinnerInterceptor } from '../interceptors/spinner.interceptor';
-import { SingupComponent } from '../components/singup/singup.component';
+import { ConfirmGroupDialogComponent } from '../components/confirm-dialog/confirm-dialog.component';
+import { GroupDialogComponent } from '../components/group-dialog/group-dialog.component';
 
 
 @NgModule({
@@ -47,7 +51,9 @@ import { SingupComponent } from '../components/singup/singup.component';
     LoginComponent,
     TodoComponent,
     SpinnerOverlayComponent,
-    SingupComponent
+    SingupComponent,
+    ConfirmGroupDialogComponent,
+    GroupDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -76,11 +82,17 @@ import { SingupComponent } from '../components/singup/singup.component';
     MatPaginatorModule,
     MatSortModule,
     MatProgressSpinnerModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDialogModule,
+    MatGridListModule
   ],
+
   providers: [
-    //TODO: check if this is necesary
-    // AuthService,    
+    {
+      //Used to pass data to GroupDialogComponent
+      provide: MAT_DIALOG_DEFAULT_OPTIONS,
+      useValue: { hasBackdrop: false }
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

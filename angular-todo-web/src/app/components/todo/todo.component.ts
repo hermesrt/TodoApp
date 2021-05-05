@@ -11,6 +11,9 @@ import { AuthService } from '../../services/auth.service';
 import { SnackBarService } from '../../services/snack-bar.service';
 import { TodoGroupService } from '../../services/todo-group.service';
 import { } from "../../models/TodoGroup";
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmGroupDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { GroupDialogComponent } from '../group-dialog/group-dialog.component';
 
 @Component({
   selector: 'app-todo',
@@ -19,7 +22,7 @@ import { } from "../../models/TodoGroup";
 })
 export class TodoComponent implements AfterViewInit {
 
-  constructor(private httpClient: HttpClient, private todoSrv: TodoGroupService, private authSrv: AuthService, private snackBarSrv: SnackBarService) { }
+  constructor(private httpClient: HttpClient, private todoSrv: TodoGroupService, private authSrv: AuthService, private snackBarSrv: SnackBarService, private dialog: MatDialog) { }
 
   search = new FormControl("", [Validators.min(3)]);
   displayedColumns: string[] = ["name", "priority", "actions"];
@@ -42,6 +45,25 @@ export class TodoComponent implements AfterViewInit {
     this.paginator.pageIndex = 0;
   }
 
+  confirmDialog(): Observable<any> {
+    const dialogRef = this.dialog.open(ConfirmGroupDialogComponent);
+    return dialogRef.afterClosed();
+  }
+
+  editGroupDialog(todoGroup: TodoGroup) {
+    const dialogRef = this.dialog.open(GroupDialogComponent, {
+      data: todoGroup,
+      width: "20%",
+      minWidth: "20em"
+    });
+    dialogRef.afterClosed().subscribe(editedGroup => {
+      if (editedGroup) {
+        const data = this.todoDataSource.data.filter(e => e.id != editedGroup.id);
+        data.push(<TodoGroup>editedGroup);
+        this.todoDataSource.data = data;
+      }
+    });
+  }
 
   getGroups() {
     const userData = this.authSrv.getJwtData();
@@ -59,42 +81,58 @@ export class TodoComponent implements AfterViewInit {
       )
   }
   deleteGroup(group: TodoGroup) {
-    //TODO: confirm dialog
-    const dataSource = this.todoDataSource;
-    this.todoSrv.deleteGroup(group.id)
-      .subscribe(
-        (result) => {
-          dataSource.data = dataSource.data.filter(e => e.id != group.id);
-        },
-        (error) => {
-        }
-      )
+    this.confirmDialog().subscribe(result => {
+      if (result) {
+        const dataSource = this.todoDataSource;
+        this.todoSrv.deleteGroup(group.id)
+          .subscribe(
+            (result) => {
+              dataSource.data = dataSource.data.filter(e => e.id != group.id);
+            },
+            (error) => {
+              this.snackBarSrv.open("Error al borrar el grupo!");
+            }
+          )
+      }
+    });
   }
+
   addGroup() {
-    if (this.search.invalid) {
-      this.snackBarSrv.open("Ingrese un nombre valido!");
-      return;
-    }
-    const dataSource = this.todoDataSource;
-    const userData = this.authSrv.getJwtData();
-    if (!userData) {
-      this.snackBarSrv.open("Error al recuperar la información del usuario!");
-      return;
-    }
-    this.todoSrv.postGroup(<TodoGroup>{
-      name: this.search.value,
-      userId: userData.Id
-    })
-      .subscribe(
-        (res) => {
-          const newGroup = <TodoGroup>res;
-          dataSource.data.push(newGroup);
-          dataSource.filter = newGroup.name;
-        },
-        (err) => {
-          this.snackBarSrv.open("Error al crear el grupo!");
-        }
-      );
+    // if (this.search.invalid) {
+    //   this.snackBarSrv.open("Ingrese un nombre valido!");
+    //   return;
+    // }
+    // const dataSource = this.todoDataSource;
+    // const userData = this.authSrv.getJwtData();
+    // if (!userData) {
+    //   this.snackBarSrv.open("Error al recuperar la información del usuario!");
+    //   return;
+    // }
+    // this.todoSrv.postGroup(<TodoGroup>{
+    //   name: this.search.value,
+    //   userId: userData.Id
+    // })
+    //   .subscribe(
+    //     (res) => {
+    //       const newGroup = <TodoGroup>res;
+    //       dataSource.data.push(newGroup);
+    //       dataSource.filter = newGroup.name;
+    //     },
+    //     (err) => {
+    //       this.snackBarSrv.open("Error al crear el grupo!");
+    //     }
+    //   );
+    const dialogRef = this.dialog.open(GroupDialogComponent, {
+      width: "20%",
+      minWidth: "20em"
+    });
+    dialogRef.afterClosed().subscribe(editedGroup => {
+      if (editedGroup) {
+        const data = this.todoDataSource.data.filter(e => e.id != editedGroup.id);
+        data.push(<TodoGroup>editedGroup);
+        this.todoDataSource.data = data;
+      }
+    });
 
   }
 }

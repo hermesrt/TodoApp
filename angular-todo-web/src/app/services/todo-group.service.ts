@@ -13,7 +13,7 @@ export class TodoGroupService {
   constructor(private httpClient: HttpClient, private authSrv: AuthService) { }
 
   postGroup(todoGroup: TodoGroup) {
-    return this.httpClient.post("https://localhost:44368/api/TodoGroup", todoGroup);
+    return this.httpClient.post<TodoGroup>("https://localhost:44368/api/TodoGroup", todoGroup);
   }
   getGroups(userId: number): Observable<TodoGroup[]> {
     const params = new HttpParams().set("UserId", userId.toString());
@@ -23,5 +23,9 @@ export class TodoGroupService {
   }
   deleteGroup(id: number): Observable<any> {
     return this.httpClient.delete<any>(`https://localhost:44368/api/TodoGroup/${id}`)
+  }
+
+  putGroup(todoGroup: TodoGroup) {
+    return this.httpClient.put<TodoGroup>(`https://localhost:44368/api/TodoGroup/${todoGroup.id}`, todoGroup);
   }
 }
